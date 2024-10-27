@@ -4,18 +4,20 @@
 #include "Animal.h"
 
 class Fish : public Animal {
-private:
-    std::string foodType;
-
 public:
     Fish();
-    Fish(const std::string& breed, const std::string& color, const std::string& foodType);
+    Fish(const std::string& breed, const std::string& color, const std::string& dietType);
+    Fish(const Fish& other);
     ~Fish();
 
-    void printInfo() const override;
+    void display() const override;
+    void setData(const std::string& breed, const std::string& color) override;
 
-    void setFoodType(const std::string& foodType);
-    std::string getFoodType() const;
+    std::string getDietType() const;
+    void setDietType(const std::string& dietType);
+
+private:
+    std::string dietType;
 };
 
-#endif
+#endif // FISH_H

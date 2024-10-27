@@ -2,23 +2,21 @@
 #define KEEPER_H
 
 #include "Animal.h"
-#include <fstream>
+#include <vector>
 
 class Keeper {
-private:
-    Animal** animals;
-    int size;
-
 public:
     Keeper();
     ~Keeper();
 
     void addAnimal(Animal* animal);
     void removeAnimal(int index);
-    void printAnimals() const;
-
+    void displayAnimals() const;
     void saveToFile(const std::string& filename) const;
     void loadFromFile(const std::string& filename);
+
+private:
+    std::vector<Animal*> animals;
 };
 
-#endif
+#endif // KEEPER_H

@@ -1,63 +1,66 @@
 #include "Keeper.h"
 #include "Fish.h"
+#include "Bird.h"
+#include "Cat.h"
 #include <iostream>
-
-void showMenu() {
-    std::cout << "1. Add Fish" << std::endl;
-    std::cout << "2. Remove Animal" << std::endl;
-    std::cout << "3. Show all Animals" << std::endl;
-    std::cout << "4. Save to file" << std::endl;
-    std::cout << "5. Load from file" << std::endl;
-    std::cout << "6. Exit" << std::endl;
-}
 
 int main() {
     Keeper keeper;
     int choice;
-    do {
-        showMenu();
+    std::string breed, color, dietType, food, habitat, ownerName, nickname;
+
+    while (true) {
+        std::cout << "1. Add Fish\n2. Add Bird\n3. Add Cat\n4. Display Animals\n5. Save to File\n6. Load from File\n7. Exit\n";
+        std::cout << "Enter your choice: ";
         std::cin >> choice;
+
         switch (choice) {
-            case 1: {
-                std::string breed, color, foodType;
+            case 1:
                 std::cout << "Enter breed: ";
                 std::cin >> breed;
                 std::cout << "Enter color: ";
                 std::cin >> color;
-                std::cout << "Enter food type: ";
-                std::cin >> foodType;
-                Fish* fish = new Fish(breed, color, foodType);
-                keeper.addAnimal(fish);
+                std::cout << "Enter diet type: ";
+                std::cin >> dietType;
+                keeper.addAnimal(new Fish(breed, color, dietType));
                 break;
-            }
-            case 2: {
-                int index;
-                std::cout << "Enter the index of the animal to remove: ";
-                std::cin >> index;
-                try {
-                    keeper.removeAnimal(index);
-                } catch (const std::exception& e) {
-                    std::cout << e.what() << std::endl;
-                }
+            case 2:
+                std::cout << "Enter breed: ";
+                std::cin >> breed;
+                std::cout << "Enter color: ";
+                std::cin >> color;
+                std::cout << "Enter food: ";
+                std::cin >> food;
+                std::cout << "Enter habitat: ";
+                std::cin >> habitat;
+                keeper.addAnimal(new Bird(breed, color, food, habitat));
                 break;
-            }
             case 3:
-                keeper.printAnimals();
+                std::cout << "Enter breed: ";
+                std::cin >> breed;
+                std::cout << "Enter color: ";
+                std::cin >> color;
+                std::cout << "Enter owner name: ";
+                std::cin >> ownerName;
+                std::cout << "Enter nickname: ";
+                std::cin >> nickname;
+                keeper.addAnimal(new Cat(breed, color, ownerName, nickname));
                 break;
             case 4:
-                keeper.saveToFile("animals.dat");
+                keeper.displayAnimals();
                 break;
             case 5:
-                keeper.loadFromFile("animals.dat");
+                keeper.saveToFile("animals.txt");
                 break;
             case 6:
-                std::cout << "Exiting..." << std::endl;
+                keeper.loadFromFile("animals.txt");
                 break;
+            case 7:
+                return 0;
             default:
-                std::cout << "Invalid choice!" << std::endl;
-                break;
+                std::cout << "Invalid choice" << std::endl;
         }
-    } while (choice != 6);
+    }
 
     return 0;
 }

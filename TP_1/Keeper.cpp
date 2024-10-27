@@ -1,63 +1,87 @@
 #include "Keeper.h"
+#include "Fish.h"
+#include "Bird.h"
+#include "Cat.h"
 #include <iostream>
+#include <fstream>
 
-Keeper::Keeper() : animals(nullptr), size(0) {
-    std::cout << "Keeper constructor called." << std::endl;
+Keeper::Keeper() {
+    std::cout << "Keeper constructor called" << std::endl;
 }
 
 Keeper::~Keeper() {
-    for (int i = 0; i < size; ++i) {
-        delete animals[i];
+    for (Animal* animal : animals) {
+        delete animal;
     }
-    delete[] animals;
-    std::cout << "Keeper destructor called." << std::endl;
+    std::cout << "Keeper destructor called" << std::endl;
 }
 
 void Keeper::addAnimal(Animal* animal) {
-    Animal** newAnimals = new Animal*[size + 1];
-    for (int i = 0; i < size; ++i) {
-        newAnimals[i] = animals[i];
-    }
-    newAnimals[size] = animal;
-    delete[] animals;
-    animals = newAnimals;
-    size++;
+    animals.push_back(animal);
 }
 
 void Keeper::removeAnimal(int index) {
-    if (index < 0 || index >= size) {
-        throw std::out_of_range("Invalid index for removal");
+    if (index >= 0 && index < animals.size()) {
+        delete animals[index];
+        animals.erase(animals.begin() + index);
+    } else {
+        std::cout << "Invalid index" << std::endl;
     }
-    delete animals[index];
-    for (int i = index; i < size - 1; ++i) {
-        animals[i] = animals[i + 1];
-    }
-    size--;
 }
 
-void Keeper::printAnimals() const {
-    for (int i = 0; i < size; ++i) {
-        animals[i]->printInfo();
+void Keeper::displayAnimals() const {
+    for (const Animal* animal : animals) {
+        animal->display();
     }
 }
 
 void Keeper::saveToFile(const std::string& filename) const {
-    std::ofstream file(filename, std::ios::binary);
-    if (!file) throw std::ios_base::failure("Error opening file for writing");
-    file.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    for (int i = 0; i < size; ++i) {
-        // Сохранение информации
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        for (const Animal* animal : animals) {
+            std::string type;
+            if (dynamic_cast<const Fish*>(animal)) {
+                type = "Fish";
+                const Fish* fish = dynamic_cast<const Fish*>(animal);
+                file << type << " " << fish->getBreed() << " " << fish->getColor() << " " << fish->getDietType() << std::endl;
+            } else if (dynamic_cast<const Bird*>(animal)) {
+                type = "Bird";
+                const Bird* bird = dynamic_cast<const Bird*>(animal);
+                file << type << " " << bird->getBreed() << " " << bird->getColor() << " " << bird->getFood() << " " << bird->getHabitat() << std::endl;
+            } else if (dynamic_cast<const Cat*>(animal)) {
+                type = "Cat";
+                const Cat* cat = dynamic_cast<const Cat*>(animal);
+                file << type << " " << cat->getBreed() << " " << cat->getColor() << " " << cat->getOwnerName() << " " << cat->getNickname() << std::endl;
+            }
+        }
+        file.close();
+    } else {
+        std::cout << "Unable to open file for writing" << std::endl;
     }
-    file.close();
 }
 
 void Keeper::loadFromFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) throw std::ios_base::failure("Error opening file for reading");
-    file.read(reinterpret_cast<char*>(&size), sizeof(size));
-    animals = new Animal*[size];
-    for (int i = 0; i < size; ++i) {
-        // Восстановление информации
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        std::string type, breed, color, dietType, food, habitat, ownerName, nickname;
+        while (file >> type >> breed >> color) {
+            Animal* animal = nullptr;
+            if (type == "Fish") {
+                file >> dietType;
+                animal = new Fish(breed, color, dietType);
+            } else if (type == "Bird") {
+                file >> food >> habitat;
+                animal = new Bird(breed, color, food, habitat);
+            } else if (type == "Cat") {
+                file >> ownerName >> nickname;
+                animal = new Cat(breed, color, ownerName, nickname);
+            }
+            if (animal) {
+                animals.push_back(animal);
+            }
+        }
+        file.close();
+    } else {
+        std::cout << "Unable to open file for reading" << std::endl;
     }
-    file.close();
 }
