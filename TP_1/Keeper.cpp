@@ -1,7 +1,4 @@
 #include "Keeper.h"
-#include "Fish.h"
-#include "Bird.h"
-#include "Cat.h"
 #include <iostream>
 #include <fstream>
 
@@ -44,11 +41,13 @@ void Keeper::saveToFile(const std::string& filename) const {
                 type = "Fish";
                 const Fish* fish = dynamic_cast<const Fish*>(animal);
                 file << type << " " << fish->getBreed() << " " << fish->getColor() << " " << fish->getDietType() << std::endl;
-            } else if (dynamic_cast<const Bird*>(animal)) {
+            }
+            if (dynamic_cast<const Bird*>(animal)) {
                 type = "Bird";
                 const Bird* bird = dynamic_cast<const Bird*>(animal);
                 file << type << " " << bird->getBreed() << " " << bird->getColor() << " " << bird->getFood() << " " << bird->getHabitat() << std::endl;
-            } else if (dynamic_cast<const Cat*>(animal)) {
+            }
+            if (dynamic_cast<const Cat*>(animal)) {
                 type = "Cat";
                 const Cat* cat = dynamic_cast<const Cat*>(animal);
                 file << type << " " << cat->getBreed() << " " << cat->getColor() << " " << cat->getOwnerName() << " " << cat->getNickname() << std::endl;

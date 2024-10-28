@@ -3,6 +3,7 @@
 
 #include "Animal.h"
 #include <vector>
+#include <string>
 
 class Keeper {
 public:

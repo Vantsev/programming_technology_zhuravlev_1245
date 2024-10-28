@@ -1,7 +1,5 @@
 #include "Keeper.h"
-#include "Fish.h"
-#include "Bird.h"
-#include "Cat.h"
+#include "Animal.h"
 #include <iostream>
 
 int main() {
