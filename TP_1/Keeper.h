@@ -11,7 +11,7 @@ public:
     ~Keeper();
 
     void addAnimal(Animal* animal);
-    void removeAnimal(int index);
+    void removeAnimal();
     void displayAnimals() const;
     void saveToFile(const std::string& filename) const;
     void loadFromFile(const std::string& filename);

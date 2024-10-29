@@ -17,7 +17,34 @@ void Keeper::addAnimal(Animal* animal) {
     animals.push_back(animal);
 }
 
-void Keeper::removeAnimal(int index) {
+void Keeper::removeAnimal() {
+    int choice;
+    std::cout << "1. Remove Fish\n2. Remove Bird\n3. Remove Cat\n";
+    std::cout << "Enter your choice: ";
+    std::cin >> choice;
+
+    int index = -1;
+    switch (choice) {
+        case 1:
+            displayAnimals();
+            std::cout << "Enter the index of the Fish to remove: ";
+            std::cin >> index;
+            break;
+        case 2:
+            displayAnimals();
+            std::cout << "Enter the index of the Bird to remove: ";
+            std::cin >> index;
+            break;
+        case 3:
+            displayAnimals();
+            std::cout << "Enter the index of the Cat to remove: ";
+            std::cin >> index;
+            break;
+        default:
+            std::cout << "Invalid choice" << std::endl;
+            return;
+    }
+
     if (index >= 0 && index < animals.size()) {
         delete animals[index];
         animals.erase(animals.begin() + index);
@@ -25,6 +52,7 @@ void Keeper::removeAnimal(int index) {
         std::cout << "Invalid index" << std::endl;
     }
 }
+
 
 void Keeper::displayAnimals() const {
     for (const Animal* animal : animals) {

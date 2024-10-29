@@ -6,9 +6,10 @@ int main() {
     Keeper keeper;
     int choice;
     std::string breed, color, dietType, food, habitat, ownerName, nickname;
+    int index;
 
     while (true) {
-        std::cout << "1. Add Fish\n2. Add Bird\n3. Add Cat\n4. Display Animals\n5. Save to File\n6. Load from File\n7. Exit\n";
+        std::cout << "1. Add Fish\n2. Add Bird\n3. Add Cat\n4. Display Animals\n5. Save to File\n6. Load from File\n7. Remove Animal\n8. Exit\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
@@ -54,6 +55,9 @@ int main() {
                 keeper.loadFromFile("animals.txt");
                 break;
             case 7:
+                keeper.removeAnimal();
+                break;
+            case 8:
                 return 0;
             default:
                 std::cout << "Invalid choice" << std::endl;
